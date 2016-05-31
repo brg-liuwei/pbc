@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -O2 -fPIC -Wall
-LUADIR = /usr/local/include
+IFLAGS = $(shell pkg-config lua --cflags)
+LFLAGS = $(shell pkg-config lua --libs)
 TARGET = protobuf.so
 
 .PHONY : all clean
@@ -8,7 +9,7 @@ TARGET = protobuf.so
 all : $(TARGET)
 
 $(TARGET) : pbc-lua.c
-	$(CC) $(CFLAGS) -shared -o $@ -I../.. -I$(LUADIR) -L../../build $^ -lpbc
+	$(CC) $(CFLAGS) -shared -o $@ -I../.. $(IFLAGS) $(LFLAGS) -L../../build $^ -lpbc
 
 clean :
 	rm -f $(TARGET)
